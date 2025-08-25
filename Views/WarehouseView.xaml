@@ -1,0 +1,313 @@
+﻿<UserControl x:Class="ULTRA.Views.WarehouseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="1280" d:DesignHeight="760">
+
+    <UserControl.Resources>
+
+        <Style x:Key="WatermarkTextBox" TargetType="TextBox">
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                            <TextBlock x:Name="PART_Watermark"
+                                       Margin="10,0,0,0"
+                                       Foreground="#9AA0A6"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False"
+                                       Text="{TemplateBinding Tag}"
+                                       Visibility="Collapsed"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="PART_Watermark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="PART_Watermark" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LeftGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="RowHeight" Value="34"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="ColumnHeaderHeight" Value="36"/>
+            <Setter Property="GridLinesVisibility" Value="All"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E2E8F0"/>
+            <Setter Property="VerticalGridLinesBrush"   Value="#E2E8F0"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style x:Key="ColCard" TargetType="Border">
+            <Setter Property="Margin" Value="8,2"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="MinWidth" Value="240"/>
+        </Style>
+
+        <Style x:Key="SlotCell" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Margin" Value="6"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="AllowDrop" Value="True"/>
+            <Setter Property="MinHeight" Value="70"/>
+        </Style>
+
+        <Style x:Key="TbBtn" TargetType="Button">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="MinWidth" Value="56"/>
+            <Setter Property="Margin" Value="6,0,0,0"/>
+            <Setter Property="Padding" Value="10,2"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="0" Grid.ColumnSpan="2"
+                Background="#E6F0FA"
+                BorderBrush="#CBD5E1"
+                BorderThickness="1"
+                Margin="10,8" Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="검색" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <TextBox Width="220"
+                             Style="{StaticResource WatermarkTextBox}"
+                             Tag="검색(품명/속성/코드)"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="대분류" VerticalAlignment="Center" Margin="10,0,6,0"/>
+                    <ComboBox Width="140"
+                              ItemsSource="{Binding CategoryOptions}"
+                              SelectedItem="{Binding SelectedCategory}"/>
+                    <TextBlock Text="중분류" VerticalAlignment="Center" Margin="10,0,6,0"/>
+                    <ComboBox Width="140"
+                              ItemsSource="{Binding SubCategoryOptions}"
+                              SelectedItem="{Binding SelectedSubCategory}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                    <TextBlock Text="창고" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                    <ComboBox Width="150"
+                              ItemsSource="{Binding Warehouses}"
+                              SelectedItem="{Binding SelectedWarehouse}"/>
+                    <Button Style="{StaticResource TbBtn}" Command="{Binding AddWarehouseCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Assets/add.png" Width="14" Height="14" Margin="0,0,4,0"/>
+                            <TextBlock Text="창고추가" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource TbBtn}" Command="{Binding RenameWarehouseCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Assets/edit.png" Width="14" Height="14" Margin="0,0,4,0"/>
+                            <TextBlock Text="이름변경" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource TbBtn}" Command="{Binding RemoveWarehouseCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Assets/delete.png" Width="14" Height="14" Margin="0,0,4,0"/>
+                            <TextBlock Text="창고삭제" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <TextBlock Text="  열" Margin="14,0,8,0" VerticalAlignment="Center"/>
+                    <Button Style="{StaticResource TbBtn}" Content="-" Command="{Binding RemoveColumnCommand}"/>
+                    <TextBlock Text="{Binding ColCount}" VerticalAlignment="Center" Margin="6,0"/>
+                    <Button Style="{StaticResource TbBtn}" Content="+" Command="{Binding AddColumnCommand}"/>
+
+                    <Button Style="{StaticResource TbBtn}" Command="{Binding CancelCommand}" Margin="12,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Assets/cancel.png" Width="14" Height="14" Margin="0,0,4,0"/>
+                            <TextBlock Text="취소" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource TbBtn}" Command="{Binding SaveCommand}" Margin="6,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Assets/save.png" Width="14" Height="14" Margin="0,0,4,0"/>
+                            <TextBlock Text="저장" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Grid.Column="0" Margin="10,0,8,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <DataGrid x:Name="ProductGrid"
+                      Grid.Row="0"
+                      Style="{StaticResource LeftGrid}"
+                      ItemsSource="{Binding ProductsView}"
+                      SelectionUnit="FullRow"
+                      PreviewMouseMove="ProductGrid_PreviewMouseMove">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="번호" Binding="{Binding No}" Width="80"/>
+                    <DataGridTextColumn Header="품명" Binding="{Binding Name}" Width="*"/>
+                    <DataGridTextColumn Header="속성" Binding="{Binding Attr}" Width="100"/>
+                    <DataGridTextColumn Header="대분류" Binding="{Binding Category}" Width="110"/>
+                    <DataGridTextColumn Header="중분류" Binding="{Binding SubCategory}" Width="110"/>
+                    <DataGridTextColumn Header="단위" Binding="{Binding WarehouseUnit}" Width="70"/>
+                    <DataGridTextColumn Header="수량" Binding="{Binding TotalQtyDisplay}" Width="80">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
+                <Button Height="30" MinWidth="100" 
+                        Command="{Binding AddStockCommand}"
+                        CommandParameter="{Binding ElementName=ProductGrid, Path=SelectedItem}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/box_add.png" Width="14" Height="14" Margin="0,0,4,0"/>
+                        <TextBlock Text="재고추가" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button Height="30" MinWidth="100" Margin="8,0,0,0"
+                        Command="{Binding SetUnitCommand}"
+                        CommandParameter="{Binding ElementName=ProductGrid, Path=SelectedItem}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/box_edit.png" Width="14" Height="14" Margin="0,0,4,0"/>
+                        <TextBlock Text="단위설정" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Margin="0,0,10,10"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding Columns}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="1"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ColCard}">
+                            <StackPanel>
+                                <DockPanel LastChildFill="False">
+                                    <TextBlock DockPanel.Dock="Left"
+                                               Text="{Binding Header}"
+                                               FontWeight="SemiBold" FontSize="14"
+                                               VerticalAlignment="Center"/>
+                                    <Button DockPanel.Dock="Right" Style="{StaticResource TbBtn}" MinWidth="70"
+                                            Command="{Binding DataContext.RenameColumnCommand,
+                                                      RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding Col}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="/Assets/edit.png" Width="14" Height="14" Margin="0,0,4,0"/>
+                                            <TextBlock Text="이름변경" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DockPanel>
+
+                                <ItemsControl ItemsSource="{Binding Slots}" Margin="0,6,0,0">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Rows="2" Columns="5"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{StaticResource SlotCell}"
+                                                    MouseMove="SlotCell_MouseMove"
+                                                    Drop="SlotCell_Drop">
+                                                <Grid>
+                                                    <Grid.Style>
+                                                        <Style TargetType="Grid">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsEmpty}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Grid.Style>
+
+                                                    <TextBlock Text="{Binding Index, StringFormat={}{0:00}}"
+                                                               VerticalAlignment="Top"
+                                                               HorizontalAlignment="Left"
+                                                               Margin="2,0"
+                                                               Foreground="#CBD5E1"
+                                                               FontSize="10"
+                                                               IsHitTestVisible="False"/>
+
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <Image Source="/Assets/box.png" Width="20" Height="20" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   FontWeight="SemiBold"
+                                                                   TextTrimming="CharacterEllipsis"
+                                                                   TextAlignment="Center"/>
+                                                        <TextBlock Text="{Binding QtyUnit}"
+                                                                   Foreground="#4B5563"
+                                                                   TextAlignment="Center"/>
+                                                    </StackPanel>
+
+                                                    <Button Width="20" Height="20"
+                                                            HorizontalAlignment="Right"
+                                                            VerticalAlignment="Top"
+                                                            Margin="0,-6,-6,0"
+                                                            ToolTip="셀 비우기"
+                                                            Click="ClearSlot_Click">
+                                                        <Image Source="/Assets/delete.png"/>
+                                                    </Button>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Grid Grid.Row="2" Grid.ColumnSpan="2"/>
+    </Grid>
+</UserControl>

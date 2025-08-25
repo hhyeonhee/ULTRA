@@ -1,0 +1,121 @@
+﻿<UserControl x:Class="ULTRA.Views.MovementsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="1200"
+             d:DesignHeight="760">
+
+    <UserControl.Resources>
+        <Style x:Key="ListGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="RowHeight" Value="34"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="GridLinesVisibility" Value="All"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E2E8F0"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style x:Key="ToolbarButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="6,0,0,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="DetailButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="ToolTip" Value="상세보기"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid Margin="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="0,0,0,8" Padding="10" CornerRadius="8"
+                Background="#E6F0FA" BorderBrush="#CBD5E1" BorderThickness="1">
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
+                    <TextBlock Text="기간" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                    <DatePicker SelectedDate="{Binding From}" Width="140" Margin="0,0,6,0"/>
+                    <TextBlock Text="~" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                    <DatePicker SelectedDate="{Binding To}" Width="140" />
+                    <TextBlock Text="  구분" Margin="14,0,8,0" VerticalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding TypeOptions}"
+                              SelectedItem="{Binding KindFilter}" Width="100"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Margin="12,0,0,0">
+                    <Button Style="{StaticResource ToolbarButton}" Content="최신순" Command="{Binding SortRecentCommand}"/>
+                    <Button Style="{StaticResource ToolbarButton}" Content="가격 ↑" Command="{Binding SortPriceAscCommand}"/>
+                    <Button Style="{StaticResource ToolbarButton}" Content="가격 ↓" Command="{Binding SortPriceDescCommand}"/>
+                    <Button Style="{StaticResource ToolbarButton}" Content="새로고침" Command="{Binding RefreshCommand}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button Style="{StaticResource ToolbarButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="pack://application:,,,/Assets/print.png" Width="14" Height="14" Margin="0,0,6,0"/>
+                            <TextBlock Text="인쇄"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <DataGrid Grid.Row="1" Style="{StaticResource ListGrid}"
+                  ItemsSource="{Binding ItemsView}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="일자"
+                                    Binding="{Binding Date, StringFormat={}{0:MM-dd}}"
+                                    Width="90" />
+
+                <DataGridTemplateColumn Header="구분" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                                <Border Width="14" Height="14" CornerRadius="3"
+                                        Background="{Binding KindBrush}"/>
+                                <TextBlock Text="{Binding KindText}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="주문번호" Binding="{Binding OrderNo}" Width="240"/>
+                <DataGridTextColumn Header="가격" Binding="{Binding PriceDisplay}" Width="140"  ElementStyle="{StaticResource CellRightAlignStyle}"/>
+                <DataGridTextColumn Header="메모" Binding="{Binding Memo}" Width="*"/>
+
+                <DataGridTemplateColumn Header="상세" Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource DetailButton}"
+                                    Command="{Binding OpenDetailCommand}">
+                                <Image Source="pack://application:,,,/Assets/more.png"
+                                       Width="14" Height="14"/>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

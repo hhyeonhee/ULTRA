@@ -1,0 +1,185 @@
+﻿<UserControl x:Class="ULTRA.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="980"
+             d:DesignHeight="760">
+
+    <UserControl.Resources>
+        <Style x:Key="KpiCard" TargetType="Border">
+            <Setter Property="Padding" Value="18"/>
+            <Setter Property="Margin" Value="10,8"/>
+            <Setter Property="Background" Value="#F5F6FA"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style x:Key="TightGrid" TargetType="DataGrid">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="RowHeight" Value="36"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="All"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E2E8F0"/>
+            <Setter Property="VerticalGridLinesBrush"   Value="#E2E8F0"/>
+            <Setter Property="RowHeaderWidth" Value="0"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="ColumnHeaderStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Height" Value="36"/>
+                        <Setter Property="Padding" Value="8,0"/>
+                        <Setter Property="Background" Value="#F8FAFC"/>
+                        <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CellCenter" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="CellRightAlignStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+
+        <Style x:Key="QuickBtn" TargetType="Button">
+            <Setter Property="Margin" Value="6,0,0,0"/>
+            <Setter Property="Padding" Value="10,4"/>
+            <Setter Property="MinWidth" Value="60"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CBD5E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="DetailButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid Margin="4,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="180"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="10,8" Padding="10" CornerRadius="8"
+                Background="#E6F0FA" BorderBrush="#CBD5E1" BorderThickness="1">
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
+                    <TextBlock Text="기간" Margin="0,0,8,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <DatePicker SelectedDate="{Binding StartDate}" Width="140" Margin="0,0,6,0"/>
+                    <TextBlock Text="~" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                    <DatePicker SelectedDate="{Binding EndDate}" Width="140" />
+                    <WrapPanel Margin="12,0,0,0">
+                        <Button Style="{StaticResource QuickBtn}" Content="1주일" Command="{Binding Range1WCommand}"/>
+                        <Button Style="{StaticResource QuickBtn}" Content="1개월" Command="{Binding Range1MCommand}"/>
+                        <Button Style="{StaticResource QuickBtn}" Content="3개월" Command="{Binding Range3MCommand}"/>
+                        <Button Style="{StaticResource QuickBtn}" Content="6개월" Command="{Binding Range6MCommand}"/>
+                        <Button Style="{StaticResource QuickBtn}" Content="1년"   Command="{Binding Range1YCommand}"/>
+                        <Button Style="{StaticResource QuickBtn}" Content="3년"   Command="{Binding Range3YCommand}"/>
+                    </WrapPanel>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="0,6,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource KpiCard}">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="입고" Foreground="#4A5568" FontSize="16" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding InCount, StringFormat={}{0} 건}" FontWeight="Bold" FontSize="28" TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource KpiCard}">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="출고" Foreground="#4A5568" FontSize="16" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding OutCount, StringFormat={}{0} 건}" FontWeight="Bold" FontSize="28" TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource KpiCard}">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="매출액" Foreground="#4A5568" FontSize="16" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding SalesAmountDisplay}" FontWeight="Bold" FontSize="28" TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Style="{StaticResource KpiCard}">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="순이익" Foreground="#4A5568" FontSize="16" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding ProfitDisplay}" FontWeight="Bold" FontSize="28" TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Style="{StaticResource KpiCard}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="최근 출입고" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                <Grid Grid.Row="1" x:Name="RecentGridHost">
+                    <DataGrid x:Name="RecentGrid"
+                              Style="{StaticResource TightGrid}"
+                              ItemsSource="{Binding RecentView}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="일자" Binding="{Binding Date, StringFormat={}{0:MM-dd}}" Width="90"
+                                                ElementStyle="{StaticResource CellCenter}"/>
+                            <DataGridTemplateColumn Header="구분" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Border Width="14" Height="14" CornerRadius="3" Background="{Binding KindBrush}"/>
+                                            <TextBlock Text="{Binding KindText}" Margin="8,0,0,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="문서번호" Binding="{Binding OrderNo}" Width="240"/>
+                            <DataGridTextColumn Header="가격" Binding="{Binding PriceDisplay}" Width="120"
+                                                ElementStyle="{StaticResource CellRightAlignStyle}"/>
+                            <DataGridTextColumn Header="메모" Binding="{Binding Memo}" Width="*"/>
+                            <DataGridTemplateColumn Header="상세" Width="60">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource DetailButton}"
+                                                Command="{Binding OpenDetailCommand}">
+                                            <Image Source="pack://application:,,,/Assets/more.png" Width="14" Height="14"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

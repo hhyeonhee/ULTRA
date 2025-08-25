@@ -1,0 +1,183 @@
+﻿<UserControl x:Class="ULTRA.Views.MovementsDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="980"
+             d:DesignHeight="760">
+
+    <UserControl.Resources>
+        <!-- 카드 -->
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="Margin" Value="10,8"/>
+            <Setter Property="Background" Value="#F5F6FA"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- DataGrid 기본 -->
+        <Style x:Key="TightGrid" TargetType="DataGrid">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="RowHeight" Value="36"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="All"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E2E8F0"/>
+            <Setter Property="VerticalGridLinesBrush"   Value="#E2E8F0"/>
+            <Setter Property="RowHeaderWidth" Value="0"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="ColumnHeaderStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Height" Value="36"/>
+                        <Setter Property="Padding" Value="8,0"/>
+                        <Setter Property="Background" Value="#F8FAFC"/>
+                        <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 버튼(아이콘 + 텍스트) -->
+        <Style x:Key="IconBtn" TargetType="Button">
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="8,0"/>
+        </Style>
+
+        <!-- 가운데 정렬 텍스트 -->
+        <Style x:Key="CellCenter" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="CellRight" TargetType="TextBlock" BasedOn="{StaticResource CellCenter}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 헤더 -->
+        <Border Grid.Row="0" Style="{StaticResource Card}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="일자" Foreground="#4A5568"/>
+                    <TextBlock Text="{Binding DateText}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="구분" Foreground="#4A5568"/>
+                    <TextBlock Text="{Binding TypeText}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="주문번호" Foreground="#4A5568"/>
+                    <TextBlock Text="{Binding OrderNo}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3">
+                    <TextBlock Text="가격" Foreground="#4A5568"/>
+                    <TextBlock Text="{Binding TotalAmountDisplay}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4">
+                    <TextBlock Text="거래처 / 연락처" Foreground="#4A5568"/>
+                    <TextBlock Text="{Binding PartnerDisplay}" FontSize="22" FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- 품목 테이블 -->
+        <Border Grid.Row="1" Style="{StaticResource Card}">
+            <DataGrid ItemsSource="{Binding Items}"
+                      Style="{StaticResource TightGrid}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="코드" Binding="{Binding Code}" Width="120"/>
+                    <DataGridTextColumn Header="품목명" Binding="{Binding Name}" Width="2*"/>
+                    <DataGridTextColumn Header="속성" Binding="{Binding Attr}" Width="1.2*"/>
+                    <DataGridTextColumn Header="속성코드" Binding="{Binding AttrCode}" Width="120"/>
+
+                    <DataGridTextColumn Header="수량" Binding="{Binding Qty}" Width="80">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource CellCenter}"/>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="도매가" Binding="{Binding WholesaleDisplay}" Width="120">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource CellRight}"/>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="소매가" Binding="{Binding RetailDisplay}" Width="120">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource CellRight}"/>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="선택옵션" Binding="{Binding OptionName}" Width="1.2*"/>
+                    <DataGridTextColumn Header="옵션가" Binding="{Binding OptionPriceDisplay}" Width="120">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource CellRight}"/>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="보증기간" Binding="{Binding Warranty}" Width="120"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <!-- 하단 버튼 -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,10">
+            <Button Style="{StaticResource IconBtn}" Command="{Binding BackCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/Assets/left.png" Width="16" Height="16" Margin="0,0,8,0"/>
+                    <TextBlock Text="이전"/>
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource IconBtn}" Command="{Binding EditCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/Assets/edit.png" Width="16" Height="16" Margin="0,0,8,0"/>
+                    <TextBlock Text="수정"/>
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource IconBtn}" Command="{Binding PrintCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/Assets/print.png" Width="16" Height="16" Margin="0,0,8,0"/>
+                    <TextBlock Text="출력"/>
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource IconBtn}" Command="{Binding ConfirmCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/Assets/check.png" Width="16" Height="16" Margin="0,0,8,0"/>
+                    <TextBlock Text="확인"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

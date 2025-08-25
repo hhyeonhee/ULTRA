@@ -1,0 +1,139 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\add.png" />
+    <None Remove="Assets\box.png" />
+    <None Remove="Assets\box_add.png" />
+    <None Remove="Assets\box_edit.png" />
+    <None Remove="Assets\cancel.png" />
+    <None Remove="Assets\cart.png" />
+    <None Remove="Assets\check.png" />
+    <None Remove="Assets\delete.png" />
+    <None Remove="Assets\edit.png" />
+    <None Remove="Assets\left.png" />
+    <None Remove="Assets\more.png" />
+    <None Remove="Assets\print.png" />
+    <None Remove="Assets\remove.png" />
+    <None Remove="Assets\right.png" />
+    <None Remove="Assets\sale.png" />
+    <None Remove="Assets\save.png" />
+    <None Remove="Assets\search.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\products\PT010\" />
+    <Folder Include="Assets\products\PT009\" />
+    <Folder Include="Assets\products\PT008\" />
+    <Folder Include="Assets\products\PT007\" />
+    <Folder Include="Assets\products\PT006\" />
+    <Folder Include="Assets\products\PT005\" />
+    <Folder Include="Assets\products\PT002\" />
+    <Folder Include="Assets\products\PT003\" />
+    <Folder Include="Assets\products\PT004\" />
+    <Folder Include="Models\" />
+    <Folder Include="Converters\" />
+    <Folder Include="Styles\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\add.png" />
+    <Resource Include="Assets\box.png" />
+    <Resource Include="Assets\box_add.png" />
+    <Resource Include="Assets\box_edit.png" />
+    <Resource Include="Assets\cancel.png" />
+    <Resource Include="Assets\cart.png" />
+    <Resource Include="Assets\check.png" />
+    <Resource Include="Assets\delete.png" />
+    <Resource Include="Assets\edit.png" />
+    <Resource Include="Assets\left.png" />
+    <Resource Include="Assets\more.png" />
+    <Resource Include="Assets\print.png" />
+    <Resource Include="Assets\remove.png" />
+    <Resource Include="Assets\right.png" />
+    <Resource Include="Assets\sale.png" />
+    <Resource Include="Assets\save.png" />
+    <Resource Include="Assets\search.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\products\PT001\P-002.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT001\P-003.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT001\P-008.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT002\P-001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT002\P-009.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT005\P-007.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT005\P-015.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT007\P-005.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT007\P-006.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT007\P-014.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT008\P-004.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT008\P-012.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT008\P-013.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT009\P-010.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\products\PT010\P-011.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ULTRA - 거래처정보.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ULTRA - 입출고내역.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ULTRA - 제품정보.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ULTRA - 창고현황.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ULTRA-거래처정보-sample.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ULTRA-입출고내역-sample.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ULTRA-제품정보-sample.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ULTRA-창고현황-sample.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
